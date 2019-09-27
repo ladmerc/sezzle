@@ -1,0 +1,13 @@
+.display div {
+  height:20px;
+}
+
+.keypad .btn {
+  width: 40px;
+  border-radius: 10px;
+  height: 40px;
+  border: 1px solid grey;
+  margin: 5px;
+  text-align: center;
+  line-height: 10px;
+}
