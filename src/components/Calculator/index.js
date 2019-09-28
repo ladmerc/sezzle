@@ -21,7 +21,8 @@ class Calculator extends PureComponent {
     if (/[0-9]/.test(key)) return this.handleInput(key);
     if (['+', '-', '*', '/'].includes(key)) return this.handleInput(key);
     if (['=', 'Enter'].includes(key)) return this.doCalculation();
-    if (['c', 'Backspace', 'Delete'].includes(key)) return this.handleClear();
+    if (['Backspace', 'Delete'].includes(key)) return this.handleDelete();
+    if (key === 'c') return this.handleClear();
     if (key === '.') return this.handleDecimalPress();
   }
 
