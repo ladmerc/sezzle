@@ -1,16 +1,29 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { evaluate, format } from 'mathjs';
 import KeyPad from './KeyPad';
 
 import './style.css';
 
-class Calculator extends Component {
+class Calculator extends PureComponent {
   state = {
     expression: '',
     result: ''
   }
 
   static DECIMAL_PLACES = 10
+  
+  componentDidMount = () => {
+    document.addEventListener('keypress', this.setUpKeyBindings);
+  }
+
+  setUpKeyBindings = ({ key }) => {
+    if (/[0-9]/.test(key)) return this.handleInput(key);
+    if (['+', '-', '*', '/'].includes(key)) return this.handleInput(key);
+    if (['=', 'Enter'].includes(key)) return this.doCalculation();
+    if (['c', 'Backspace', 'Delete'].includes(key)) return this.handleClear();
+    if (key === '.') return this.handleDecimalPress();
+  }
 
   handleClear = () => {
     this.setState({ expression: '', result: '' });
@@ -38,9 +51,12 @@ class Calculator extends Component {
     const { expression } = this.state;
     if (!expression) return;
 
-    const result = evaluate(expression.replace('÷', '/'))
+    const evaluated = evaluate(expression.replace('÷', '/'))
+    const result = format(evaluated, { precision: Calculator.DECIMAL_PLACES });
     this.setState({ 
-      result: format(result, { precision: Calculator.DECIMAL_PLACES }) 
+      result
+    }, () => {
+      this.props.onCalculate({ expression, result })
     })
   }
 
@@ -66,6 +82,14 @@ class Calculator extends Component {
       </div>
     )
   }
+  
+  componentWillUnmount = () => {
+    document.removeEventListener('keypress', this.setUpKeyBindings);
+  }
 }
+
+Calculator.propTypes = {
+  onCalculate: PropTypes.func
+};
 
 export default Calculator

@@ -3,11 +3,21 @@
 }
 
 .keypad .btn {
-  width: 40px;
-  border-radius: 10px;
-  height: 40px;
-  border: 1px solid grey;
-  margin: 5px;
-  text-align: center;
-  line-height: 10px;
+  width:40px;
+  border-radius:10px;
+  height:40px;
+  border:1px solid grey;
+  margin:5px;
+  text-align:center;
+  line-height:10px;
+}
+
+.history-wrap {
+  flex-direction: column;
+  align-items: center;
+}
+
+.history {
+  max-height:250px;
+  overflow:auto;
 }
